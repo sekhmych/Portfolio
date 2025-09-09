@@ -13,36 +13,65 @@
     import img_weather_app from "$lib/assets/img/weather_app.png";
     import img_web from "$lib/assets/img/web.png";
     import img_github from "$lib/assets/img/github.png";
+    import {
+        blur,
+        crossfade,
+        draw,
+        fade,
+        fly,
+        scale,
+        slide,
+    } from "svelte/transition";
 
-    let counter = 0;
+    let bg_offset_x = $state(0);
+    let bg_offset_y = $state(0);
 
-    let index = 0;
-    let prof = ["Веб-разработчик", "Андроид-разработчик"];
+    let counter = $state(0);
+
+    let index = $state(0);
+    let prof = [
+        "Веб-разработчик",
+        "Инженер по разработке API",
+        "Андроид-разработчик",
+        "Администратор баз данных",
+    ];
     let cur_prof = $derived(prof[index]);
+    let interval = $state(1000);
 
     $effect(() => {
+        setInterval(() => {
+            counter += 1;
 
-
-        counter += 1;
-
-        if (counter == 5000) {
-            if (index == prof.length) {
-                index = 0;
-            } else {
-                index += 1;
+            if (counter == 5) {
+                if (index == prof.length - 1) {
+                    index = 0;
+                } else {
+                    index += 1;
+                }
+                counter = 0;
             }
-        }
+        }, interval);
     });
 </script>
 
-<div class="scroll-smooth">
+<div
+    onpointermove={(e) => {
+        bg_offset_x = Math.round(e.clientX / (window.innerWidth / 16));
+        bg_offset_y = e.clientY;
+    }}
+>
+    <!--<div
+        class="absolute left-0 top-0 bg-purple-300 rounded-full w-32 h-32"
+        id="tygydyn"
+    ></div>-->
+
     <button
         onclick={() => {
             document
                 .getElementById("main")
                 ?.scrollIntoView({ block: "center", behavior: "smooth" });
         }}
-        class="text-5xl hover:cursor-pointer hover:bg-white hover:border-2 hover:text-black transition-all fixed bottom-4 rounded-full right-4 w-16 h-16 bg-black text-white flex items-center justify-center justify-items-center"
+        class="text-5xl transition-all delay-150 duration-300 ease-in-out hover:cursor-pointer hover:bg-white hover:border-2 hover:border-black hover:text-green-400 fixed bottom-4 rounded-full right-4 w-16 h-16 bg-black text-white flex items-center justify-center justify-items-center"
     >
         &uarr;
     </button>
@@ -56,19 +85,19 @@
                 >ГЛАВНАЯ</a
             >-->
             <a
-                class="hover:border-b-2 border-white transition-all"
+                class="hover:border-b-2 hover:text-green-400 border-white transition-all duration-75 ease-in-out"
                 href="#specializations">СПЕЦИАЛИЗАЦИИ</a
             >
             <a
-                class="hover:border-b-2 border-white transition-all"
+                class="hover:border-b-2 hover:text-green-400 border-white transition-all duration-75 ease-in-out"
                 href="#works">РАБОТЫ</a
             >
             <a
-                class="hover:border-b-2 border-white transition-all"
+                class="hover:border-b-2 hover:text-green-400 border-white transition-all duration-75 ease-in-out"
                 href="#skills">НАВЫКИ</a
             >
             <a
-                class="hover:border-b-2 border-white transition-all"
+                class="hover:border-b-2 hover:text-green-400 border-white transition-all duration-75 ease-in-out"
                 href="#contacts">КОНТАКТЫ</a
             >
         </nav>
@@ -80,11 +109,11 @@
     </div>
 
     <div
-        class="absolute right-[-7.5rem] top-0 -z-10 blur-lg rounded-full w-96 h-96 bg-purple-500"
+        class="scrollbar-hide overflow-x-hidden absolute right-[-7.5rem] top-0 -z-10 blur-lg rounded-full w-96 h-96 bg-purple-500"
     ></div>
     <!--Вступительное-->
     <div
-        class="flex items-center justify-center justify-items-center mt-12 space-x-28"
+        class="flex items-center justify-center justify-items-center p-4 mt-12"
     >
         <img
             class="w-64 h-64 rounded-full"
@@ -92,13 +121,22 @@
             src={img_sekhmych_art}
             alt="Автор в виде рисунка"
         />
-        <h2 class="text-5xl text-right">
-            <b class="text-purple-500">Сергеев</b> Владимир<br /><b
-                class="text-purple-500 text-4xl">{cur_prof}</b
-            ><br /><a
+        <h2
+            class="relative cols-3 m-auto text-5xl items-center justify-center justify-items-center text-center w-[36rem]"
+        >
+            <b class="text-purple-500">Сергеев</b> Владимир<br />
+            {#key cur_prof}
+                <div
+                    class="absolute m-auto text-center w-full"
+                    transition:slide
+                >
+                    <b class="text-purple-500 m-aut text-3xl">{cur_prof}</b>
+                </div>
+            {/key}
+            <br /><a
                 href="https://www.sakha.gov.ru/"
                 target="_blank"
-                class="font-light text-[2rem] hover:border-b-2 border-amber-400 transition-all"
+                class="font-light text-[2rem] hover:border-b-2 border-purple-400 transition-all duration-75 ease-in-out"
                 >&mdash;>Из Якутии</a
             >
         </h2>
@@ -119,18 +157,24 @@
                     .getElementById("specializations")
                     ?.scrollIntoView({ block: "start", behavior: "smooth" });
             }}
-            class="transition-all m-auto hover:cursor-pointer font-bold text-3xl bg-green-500 p-6 rounded-lg text-center tracking-[1.2rem] hover:bg-white hover:text-black hover:border-2 hover:border-black"
+            class="absolute transition-all delay-50 duration-150 ease-in-out m-auto hover:cursor-pointer font-bold text-3xl bg-green-500 p-6 rounded-lg text-center tracking-[1.2rem] hover:bg-white hover:text-black hover:border-2 hover:border-black"
             >&darr;НИЖЕ&darr;</button
         >
     </div>
 
     <div
-        class="absolute left-[-9.5rem] top-[46rem] -z-10 blur-lg rounded-full w-80 h-80 bg-purple-500"
+        class="scrollbar-hide overflow-x-hidden absolute left-[-9.5rem] top-[46rem] -z-10 blur-lg rounded-full w-80 h-80 bg-purple-500"
     ></div>
     <!--Мои специализации-->
     <div id="specializations" class="items-center justify-items-center mt-56">
-        <h2 class="text-5xl text-center">МОИ СПЕЦИАЛИЗАЦИИ</h2>
-        <p class="text-center w-[56rem] mt-2">
+        <h2
+            class="text-5xl text-center transition-all delay-150 duration-300 ease-in-out hover:scale-125"
+        >
+            МОИ СПЕЦИАЛИЗАЦИИ
+        </h2>
+        <p
+            class="text-center w-[56rem] mt-8 transition-all delay-150 duration-300 ease-in-out hover:scale-125 cursor-default hover:bg-black hover:text-white hover:p-2"
+        >
             Я специалист с опытом разработки веб и мобильных приложений. Я люблю
             изучать новые технологии. Мне нравится вникать в требования к
             проекту и очень эффективно дополнять их современными технологиями.
@@ -140,10 +184,10 @@
             class="grid grid-cols-2 items-center justify-center gap-x-44 gap-12 mt-16 space-x-36"
         >
             <div
-                class="grid-cols-2 m-auto items-center justify-items-center font-bold"
+                class="grid-cols-2 m-auto items-center justify-items-center font-bold transition-all delay-150 duration-300 ease-in-out hover:scale-125 cursor-default"
             >
                 <img
-                    class="w-16 h-16"
+                    class="w-28 h-16"
                     title="Андроид"
                     src={img_android}
                     alt="Лого Андроид"
@@ -151,7 +195,7 @@
                 <h5 class="text-center">Андроид-разработчик<br />(junior)</h5>
             </div>
             <div
-                class="grid-cols-2 m-auto items-center justify-items-center font-bold"
+                class="grid-cols-2 m-auto items-center justify-items-center font-bold transition-all delay-150 duration-300 ease-in-out hover:scale-125 cursor-default"
             >
                 <img
                     class="w-16 h-16"
@@ -164,7 +208,7 @@
                 </h5>
             </div>
             <div
-                class="grid-cols-2 m-auto items-center justify-items-center font-bold"
+                class="grid-cols-2 m-auto items-center justify-items-center font-bold transition-all delay-150 duration-300 ease-in-out hover:scale-125 cursor-default"
             >
                 <img
                     class="w-16 h-16"
@@ -175,7 +219,7 @@
                 <h5 class="text-center">Веб-разработчик<br />(junior)</h5>
             </div>
             <div
-                class="grid-cols-2 m-auto items-center justify-items-center font-bold"
+                class="grid-cols-2 m-auto items-center justify-items-center font-bold transition-all delay-150 duration-300 ease-in-out hover:scale-125 cursor-default"
             >
                 <img
                     class="w-16 h-16"
@@ -191,12 +235,18 @@
     </div>
 
     <div
-        class="absolute right-[-10.5rem] top-[128rem] -z-10 blur-lg rounded-full w-80 h-80 bg-purple-500"
+        class="scrollbar-hide overflow-x-hidden absolute overflow-clip right-[-10.5rem] top-[128rem] -z-10 blur-lg rounded-full w-80 h-80 bg-purple-500"
     ></div>
     <!--Мои работы-->
     <div id="works" class="mt-24 items-center justify-items-center">
-        <h2 class="text-5xl text-center">МОИ РАБОТЫ</h2>
-        <p class="text-center w-[56rem] mt-2">
+        <h2
+            class="text-5xl text-center transition-all delay-150 duration-300 ease-in-out hover:scale-125"
+        >
+            МОИ РАБОТЫ
+        </h2>
+        <p
+            class="text-center w-[56rem] mt-8 transition-all delay-150 duration-300 ease-in-out hover:scale-125 cursor-default hover:bg-black hover:text-white hover:p-2"
+        >
             Важно развивать в себе хорошую трудовую этику. Проявляйте себя во
             всем, чем бы вы ни занимались, будь то уборщик или ваша первая
             летняя работа, потому что эта трудовая этика будет отражаться на
@@ -206,17 +256,22 @@
         <div
             class="flex text-center justify-items-center items-center justify-center space-x-8 mt-8"
         >
-            <div class="relative bg-green-400 w-64 h-96 rounded-2xl">
+            <div
+                class="group relative transition delay-75 duration-300 ease-in-out hover:scale-110 bg-green-400 w-64 h-96 rounded-2xl"
+            >
                 <img
+                    class="w-full transition-all delay-150 duration-300 ease-in-out group-hover:translate-y-8 group-hover:scale-y-125 group-hover:rounded-2xl"
                     title="YakseCast"
                     src={img_weather_app}
                     alt="Погодное приложение с настройками, текущей погодой, прогнозом, и якутской культурой"
                 />
-                <h5 class="font-bold text-lg">
+                <h5
+                    class="absolute transition-all delay-150 duration-300 ease-in-out group-hover:opacity-0 group-hover:translate-y-16 w-full font-bold text-md p-2"
+                >
                     Погодное приложение на Андроид
                 </h5>
                 <div
-                    class="absolute flex w-16 items-center justify-center h-16 right-0 bottom-[4rem] rounded-lg rounded-r-none bg-white"
+                    class="absolute flex w-16 items-center justify-center h-16 right-0 bottom-[8rem] transition-all delay-150 duration-300 ease-in-out group-hover:rounded-2xl group-hover:bottom-0 rounded-lg rounded-r-none bg-green-400"
                 >
                     <a href="//github.com" target="_blank">
                         <img
@@ -227,17 +282,22 @@
                     </a>
                 </div>
             </div>
-            <div class="relative bg-green-400 w-64 h-96 rounded-2xl">
+            <div
+                class="group relative transition delay-75 duration-300 ease-in-out hover:scale-110 bg-green-400 w-64 h-96 rounded-2xl"
+            >
                 <img
+                    class="w-full transition-all delay-150 duration-300 ease-in-out group-hover:translate-y-8 group-hover:scale-y-125 group-hover:rounded-2xl"
                     title="Meditation App"
                     src={img_meditation_app}
                     alt="Приложение с лекциями, фоновыми звуками для медитации"
                 />
-                <h5 class="font-bold text-lg">
+                <h5
+                    class="absolute transition-all delay-150 duration-300 ease-in-out group-hover:opacity-0 group-hover:translate-y-16 w-full font-bold text-md p-2"
+                >
                     Приложение для медитации на Андроид
                 </h5>
                 <div
-                    class="absolute flex w-16 items-center justify-center h-16 right-0 bottom-[4rem] rounded-lg rounded-r-none bg-white"
+                    class="absolute flex w-16 items-center justify-center h-16 right-0 bottom-[8rem] transition-all delay-150 duration-300 ease-in-out group-hover:rounded-2xl group-hover:bottom-0 rounded-lg rounded-r-none bg-green-400"
                 >
                     <a href="//github.com" target="_blank">
                         <img
@@ -248,15 +308,22 @@
                     </a>
                 </div>
             </div>
-            <div class="relative bg-green-400 w-64 h-96 rounded-2xl">
+            <div
+                class="group relative transition delay-75 duration-300 ease-in-out hover:scale-110 bg-green-400 w-64 h-96 rounded-2xl"
+            >
                 <img
+                    class="w-full transition-all delay-150 duration-300 ease-in-out group-hover:translate-y-8 group-hover:scale-y-125 group-hover:rounded-2xl"
                     title="Guess The Number"
                     src={img_guess_app}
                     alt="Игра с уровня сложностями по угадыванию числа в определённом диапозоне"
                 />
-                <h5 class="font-bold text-lg">Угадай число на Андроид</h5>
+                <h5
+                    class="absolute transition-all delay-150 duration-300 ease-in-out group-hover:opacity-0 group-hover:translate-y-16 text-center w-full font-bold text-md p-2"
+                >
+                    Угадай число на Андроид
+                </h5>
                 <div
-                    class="absolute flex w-16 items-center justify-center h-16 right-0 bottom-[4rem] rounded-lg rounded-r-none bg-white"
+                    class="absolute flex w-16 items-center justify-center h-16 right-0 bottom-[8rem] transition-all delay-150 duration-300 ease-in-out group-hover:rounded-2xl group-hover:bottom-0 rounded-lg rounded-r-none bg-green-400"
                 >
                     <a href="//github.com" target="_blank">
                         <img
@@ -275,8 +342,14 @@
         id="skills"
         class="what-i-can-do mt-24 items-center justify-center justify-items-center"
     >
-        <h2 class="text-5xl text-center">ЧТО Я УМЕЮ</h2>
-        <p class="text-center w-[56rem] mt-2">
+        <h2
+            class="text-5xl text-center transition-all delay-150 duration-300 ease-in-out hover:scale-125"
+        >
+            ЧТО Я УМЕЮ
+        </h2>
+        <p
+            class="text-center w-[56rem] mt-8 transition-all delay-150 duration-300 ease-in-out hover:scale-125 cursor-default hover:bg-black hover:text-white hover:p-2"
+        >
             Единственный, с кем вам следует сравнивать себя, - это вы сами. Ваша
             миссия - стать сегодня лучше, чем вы были вчера. Вы делаете это,
             сосредоточившись на том, что вы можете сделать сегодня, чтобы
@@ -292,12 +365,16 @@
 
     <!--Конец-->
     <div id="contacts" class="w-full mt-24">
-        <h2 class="text-5xl text-center">ГОТОВ К НАЙМУ</h2>
+        <h2
+            class="text-5xl text-center transition-all delay-150 duration-300 ease-in-out hover:scale-125"
+        >
+            ГОТОВ К НАЙМУ
+        </h2>
         <div
             class="flex items-center justify-items-center justify-center space-x-4 mt-12"
         >
             <a
-                class="bg-green-400 w-16 h-16 flex rounded-lg"
+                class="bg-green-400 w-16 h-16 flex rounded-lg transition-all delay-150 duration-300 ease-in-out hover:scale-110 hover:-translate-x-4 hover:-rotate-45"
                 href="//vk.com/sekhmych"
                 target="_blank"
                 ><img
@@ -308,7 +385,7 @@
                 /></a
             >
             <a
-                class="bg-green-400 w-16 h-16 flex rounded-lg"
+                class="bg-green-400 w-16 h-16 flex rounded-lg transition-all delay-150 duration-300 ease-in-out hover:scale-110 hover:-translate-y-6"
                 href="//t.me/sekhmych"
                 target="_blank"
                 ><img
@@ -319,7 +396,7 @@
                 /></a
             >
             <a
-                class="bg-green-400 w-16 h-16 flex rounded-lg"
+                class="bg-green-400 w-16 h-16 flex rounded-lg transition-all delay-150 duration-300 ease-in-out hover:scale-110 hover:translate-x-4 hover:rotate-45"
                 href="mailto:sekhmych@icloud.com"
                 target="_blank"
                 ><img
@@ -330,7 +407,9 @@
                 /></a
             >
         </div>
-        <h2 class="text-6xl text-center mt-12 tracking-[1.5rem]">
+        <h2
+            class="text-5xl text-center mt-12 mb-24 tracking-[1.5rem] transition-all delay-150 duration-300 ease-in-out hover:scale-125"
+        >
             НАПИШИТЕ МНЕ СЕЙЧАС
         </h2>
     </div>
