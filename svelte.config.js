@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-node';
+import adapter from "svelte-adapter-bun";
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { sveltekit } from '@sveltejs/kit/vite';
 
@@ -13,9 +13,9 @@ const config = {
 	],
 
 	kit: {
-		adapter: adapter()
-	}
-	
+		adapter: adapter(),
+	},
+
 };
 
 export default config;
