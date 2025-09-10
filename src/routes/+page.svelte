@@ -121,7 +121,7 @@
             src={img_sekhmych_art}
             alt="Автор в виде рисунка"
         />
-        <h2
+        <h1
             class="relative cols-3 m-auto text-2xl lg:text-5xl items-center justify-center justify-items-center text-center lg:w-[36rem]"
         >
             <b class="text-purple-500">Сергеев</b> Владимир<br />
@@ -130,7 +130,7 @@
                     class="absolute lg:relative m-auto text-center"
                     transition:slide
                 >
-                    <b class="text-purple-500 m-auto text-2xl lg:text-3xl">{cur_prof}</b>
+                    <p class="text-purple-500 m-auto text-2xl lg:text-3xl">{cur_prof}</p>
                 </div>
             {/key}
             <br /><a
@@ -139,7 +139,7 @@
                 class="font-light text-[1.25rem] lg:text-[2rem] hover:border-b-2 border-purple-400 transition-all duration-75 ease-in-out"
                 >&mdash;>Из Якутии</a
             >
-        </h2>
+        </h1>
         <img
             class="lg:w-64 lg:h-64 w-32 h-32 rounded-full transition-all delay-75 duration-300 ease-in-out hover:scale-150 hover:-translate-x-8"
             title="Автор (в реальности)"
@@ -154,11 +154,11 @@
         <button
             onclick={() => {
                 document
-                    .getElementById("specializations")
+                    .getElementById("contacts")
                     ?.scrollIntoView({ block: "start", behavior: "smooth" });
             }}
             class="absolute transition-all delay-50 duration-150 ease-in-out m-auto hover:cursor-pointer font-bold text-3xl bg-green-500 p-6 rounded-lg text-center tracking-[1.2rem] hover:bg-white hover:text-black hover:border-2 hover:border-black"
-            >&darr;НИЖЕ&darr;</button
+            >&darr;НАПИШИТЕ МНЕ&darr;</button
         >
     </div>
 
@@ -374,11 +374,11 @@
 
     <!--Конец-->
     <div id="contacts" class="w-full mt-24">
-        <h2
+        <h1
             class="text-4xl lg:text-5xl text-center transition-all delay-150 duration-300 ease-in-out hover:scale-125"
         >
-            ГОТОВ К НАЙМУ
-        </h2>
+            РАЗРАБОТКА ПОД КЛЮЧ
+        </h1>
         <div
             class="flex items-center justify-items-center justify-center space-x-4 mt-12"
         >
@@ -417,9 +417,9 @@
             >
         </div>
         <h2
-            class="text-4xl lg:text-5xl text-center mt-12 mb-24 tracking-[1.5rem] transition-all delay-150 duration-300 ease-in-out hover:scale-125"
+            class="text-4xl lg:text-4xl text-center mt-12 mb-24 tracking-[1.5rem] transition-all delay-150 duration-300 ease-in-out hover:scale-125"
         >
-            НАПИШИТЕ МНЕ СЕЙЧАС
+            РАЗРАБОТКА ПОД ВАШЕ РЕШЕНИЕ
         </h2>
     </div>
 </div>
