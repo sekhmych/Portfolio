@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { sveltekit } from '@sveltejs/kit/vite';
 
@@ -10,8 +10,11 @@ const config = {
 
 	plugins: [
 		sveltekit()
-	]
+	],
 
+	kit: {
+		adapter: adapter()
+	}
 	
 };
 
