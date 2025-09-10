@@ -9,7 +9,6 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	plugins: [
-		enhancedImages(),
 		sveltekit()
 	]
 
